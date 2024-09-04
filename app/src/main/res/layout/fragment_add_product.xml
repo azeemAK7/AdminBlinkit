@@ -161,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="9.00dp"
-                        android:hint="Stock"
+                        android:hint="No Of Stock"
                         android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
