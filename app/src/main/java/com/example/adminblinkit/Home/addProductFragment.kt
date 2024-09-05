@@ -19,8 +19,10 @@ class addProductFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentAddProductBinding.inflate(layoutInflater)
+
+
+
         return binding.root
     }
-
 
 }

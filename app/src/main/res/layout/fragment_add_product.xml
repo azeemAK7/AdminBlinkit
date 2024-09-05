@@ -144,11 +144,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2.60dp"
-                    android:layout_marginStart="2.60dp"
                     app:boxCornerRadiusBottomEnd="16.00dp"
                     app:boxCornerRadiusBottomStart="16.00dp"
                     app:boxCornerRadiusTopEnd="16.00dp"
@@ -157,7 +156,7 @@
                     app:hintTextColor="@color/Yellow"
                     android:layout_weight="0.5">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ETProductStock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
