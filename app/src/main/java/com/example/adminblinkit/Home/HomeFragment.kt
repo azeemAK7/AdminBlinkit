@@ -12,7 +12,6 @@ import com.example.adminblinkit.Adapters.productAdapter
 import com.example.adminblinkit.Constants
 import com.example.adminblinkit.Models.Categories
 
-import com.example.adminblinkit.R
 import com.example.adminblinkit.ViewModels.AdminViewModel
 import com.example.adminblinkit.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
@@ -31,19 +30,31 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater)
         showCategory()
-        getAllProducts()
+        getAllProducts("all")
         return binding.root
     }
 
-    private fun getAllProducts() {
+    private fun getAllProducts(category: String) {
+        binding.productShimer.visibility = View.VISIBLE
         lifecycleScope.launch {
-            adminViewModel.getAllProducts().collect{
+            adminViewModel.getAllProducts(category).collect{listOfProduct->
+                if(listOfProduct.isEmpty()){
+                    binding.tvNoProduct.visibility = View.VISIBLE
+                    binding.rvProducts.visibility = View.GONE
+                }else{
+                    binding.tvNoProduct.visibility = View.GONE
+                    binding.rvProducts.visibility = View.VISIBLE
+                }
+                binding.productShimer.visibility = View.GONE
                 val adapter : productAdapter = productAdapter()
                 binding.rvProducts.adapter = adapter
-                adapter.differ.submitList(it)
+                adapter.differ.submitList(listOfProduct)
             }
         }
+    }
 
+    fun onSelectedProduct(category : String){
+        getAllProducts(category)
     }
 
     private fun showCategory() {
@@ -52,7 +63,7 @@ class HomeFragment : Fragment() {
             categories.add(Categories(Constants.productIcon[i],Constants.allProductsCategory[i]))
         }
 
-        binding.rvCategories.adapter = categoryAdapter(categories)
+        binding.rvCategories.adapter = categoryAdapter(categories,::onSelectedProduct)
     }
 
 

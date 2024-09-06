@@ -85,8 +85,8 @@ class addProductFragment : Fragment() {
     }
 
     private fun saveProductInDb(product: Products) {
-        adminViewModel.saveImg(imageUri)
         lifecycleScope.launch {
+            adminViewModel.saveImg(imageUri)
             adminViewModel.imgUploadSuccess.collect{
                 if(it){
                     adminViewModel.downloadedUri.collect{ imgUri ->
