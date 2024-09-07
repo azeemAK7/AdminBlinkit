@@ -160,7 +160,9 @@
                         android:id="@+id/ETProductStock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="no Of Stock"/>
+                        android:drawablePadding="9.00dp"
+                        android:hint="No of Stock"
+                        android:inputType="number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
