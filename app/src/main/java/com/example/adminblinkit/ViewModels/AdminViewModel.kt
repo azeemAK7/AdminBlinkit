@@ -25,25 +25,6 @@ class AdminViewModel : ViewModel() {
 
     val downloadedUri = MutableStateFlow<ArrayList<String?>?>(null)
 
-//    fun saveImg(imageUri : ArrayList<Uri>){
-//        var downloadUri = ArrayList<String?>( )
-//
-//        imageUri.forEach { Uri ->
-//            val imageRef =  FirebaseStorage.getInstance().reference.child(Utils.getCurrentUserId()).child("Images").child(Utils.getRandomId())
-//            imageRef.putFile(Uri).continueWithTask {
-//                imageRef.downloadUrl
-//            }.addOnCompleteListener { task ->
-//                val Uri = task.await().toString()
-//                Log.e("pp",  Uri)
-//                downloadUri.add(Uri)
-//            }
-//            Log.e("img",  downloadUri.toString())
-//        }
-//        if(downloadUri.size == imageUri.size) {
-//            _imgUploadSuccess.value = true
-//            downloadedUri.value = downloadUri
-//        }
-//    }
 
     suspend fun saveImg(imageUri: ArrayList<Uri>) {
         val downloadUri = ArrayList<String?>()
