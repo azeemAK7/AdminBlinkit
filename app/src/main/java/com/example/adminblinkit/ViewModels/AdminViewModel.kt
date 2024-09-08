@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.adminblinkit.Models.Products
 import com.example.adminblinkit.Utils
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -56,25 +58,38 @@ class AdminViewModel : ViewModel() {
 
 
     fun saveProduct(product: Products){
-        Log.i("hello", "hh")
-        FirebaseDatabase.getInstance().reference.child("Admins").child("AllProducts/${product.productId}").setValue(product).addOnSuccessListener {
-            FirebaseDatabase.getInstance().reference.child("Admins").child("ProductCategory/${product.productCategory}").setValue(product).addOnSuccessListener{
-                FirebaseDatabase.getInstance().reference.child("Admins").child("ProductType/${product.productType}").setValue(product).addOnSuccessListener{
+        FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts/${product.productId}").setValue(product).addOnSuccessListener {
+            FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory/${product.productCategory}").child("${product.productId}").setValue(product).addOnSuccessListener{
+                FirebaseDatabase.getInstance().getReference("Admins").child("ProductType/${product.productType}").child("${product.productId}").setValue(product).addOnSuccessListener{
                     _productUploadSuccess.value = true
                 }
             }
         }
     }
 
-    fun getAllProducts() : Flow<ArrayList<Products>> = callbackFlow{
+    fun saveUpdatedProduct(product: Products){
+        FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts/${product.productId}").setValue(product)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory/${product.productCategory}").child("${product.productId}").setValue(product)
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductType/${product.productType}").child("${product.productId}").setValue(product)
+            }
+
+    fun deleteProduct(product: Products){
+        FirebaseDatabase.getInstance().getReference("Admins").child("AllProducts/${product.productId}").removeValue()
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductCategory/${product.productCategory}").child("${product.productId}").removeValue()
+        FirebaseDatabase.getInstance().getReference("Admins").child("ProductType/${product.productType}").child("${product.productId}").removeValue()
+    }
+
+    fun getAllProducts(category : String) : Flow<ArrayList<Products>> = callbackFlow{
         val db = FirebaseDatabase.getInstance().reference.child("Admins").child("AllProducts")
         val productList = ArrayList<Products>()
-
         val eventListner = object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                for(product in snapshot.children){
+                productList.clear()
+                for(product in snapshot.children) {
                     val prod = product.getValue(Products::class.java)
-                    productList.add(prod!!)
+                    if (category == "all" || category == prod?.productCategory) {
+                        productList.add(prod!!)
+                    }
                 }
                 trySend(productList)
             }

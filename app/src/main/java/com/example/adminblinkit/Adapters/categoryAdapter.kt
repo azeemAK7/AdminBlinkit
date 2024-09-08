@@ -2,18 +2,15 @@ package com.example.adminblinkit.Adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.denzcoskun.imageslider.ImageSlider
-import com.denzcoskun.imageslider.models.SlideModel
 import com.example.adminblinkit.Models.Categories
-import com.example.adminblinkit.Models.Products
 import com.example.adminblinkit.databinding.CategoryItemviewBinding
-import com.example.adminblinkit.databinding.FragmentHomeBinding
-import com.example.adminblinkit.databinding.ProductItemviewBinding
+import kotlin.reflect.KFunction1
 
-class categoryAdapter(val categories: ArrayList<Categories>) : RecyclerView.Adapter<categoryAdapter.categoryViewHolder>() {
+class categoryAdapter(
+    val categories: ArrayList<Categories>,
+    val onSelectedcategory: KFunction1<String, Unit>
+) : RecyclerView.Adapter<categoryAdapter.categoryViewHolder>() {
     class categoryViewHolder(val binding: CategoryItemviewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     }
@@ -31,7 +28,11 @@ class categoryAdapter(val categories: ArrayList<Categories>) : RecyclerView.Adap
         holder.binding.apply {
             icon.setImageResource(category.icon)
             title.text = category.title
+            itemView.setOnClickListener {
+                onSelectedcategory(category.title)
+            }
         }
+
     }
 }
 
